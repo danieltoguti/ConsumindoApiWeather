@@ -4,7 +4,9 @@ Documentação
 Sistema Web para consumo de API Weatherstack. Desenvolvido por Daniel Toguti 
 
 Tecnologia
-Desenvolvido no Visual Studio 2019. 
+
+
+Desenvolvido em Asp Net Core 3.1 com Visual Studio 2019. 
 Front-End: html, css, bootstrap4, JavaScript, JQuery e Ajax.
 Back-End: Asp .Net Core 3.1 C#, MySQL Server.
 
