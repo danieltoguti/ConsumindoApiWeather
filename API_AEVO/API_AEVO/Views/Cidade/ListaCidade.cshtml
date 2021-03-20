@@ -1,0 +1,72 @@
+﻿@{
+    @model List<CidadeModel>;
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="text-center">
+        <h4>Lista de Cidades</h4>
+        @if (Model.Count > 0)
+        {
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Nome</td>
+                        <td><button type="button" class="btn btn-success" onclick="SetPesquisaCurrent('@item.Nome');">Current</button></td>
+                        <td><button type="button" class="btn btn-success" onclick="SetPesquisaForescat('@item.Nome');">Forescat</button></td>
+                        <td><button type="button" class="btn btn-success" onclick="SetPesquisaAutocomplete('@item.Nome');">Autocomplete</button></td>
+                        <td><button type="button" class="btn btn-warning" onclick="window.location.href='/cidade/editar?Id=@item.Id&Nome=@item.Nome'">Editar</button></td>
+                        <td><button type="button" class="btn btn-danger" onclick="window.location.href='/cidade/excluir?Id=@item.Id'">Excluir</button></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-primary" role="alert">
+                Sem Registros!
+            </div>
+        }
+
+        <hr />
+        <div id="dvloading"></div>
+        <div id="dvresp" style="margin-top:50px; display:none; width:100%"></div>
+
+    </div>
+
+@section ScriptsModal{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/aPI_Weather.js"></script>
+    <script>       
+        function SetPesquisaCurrent(query) {
+            PesquisaCurrent(query, $("#dvresp"), $("#dvloading"));
+        } 
+
+        function SetPesquisaForescat(query) {
+            PesquisaForescat(query, $("#dvresp"), $("#dvloading"));
+        } 
+
+        function SetPesquisaAutocomplete(query) {
+            PesquisaAutocomplete(query, $("#dvresp"), $("#dvloading"));
+        } 
+    </script>
+}
+
+

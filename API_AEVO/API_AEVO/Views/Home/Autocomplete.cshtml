@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<h4>Método Autocomplete</h4>
+<hr />
+<div class="form-row">
+
+    <div class="col-md-6">
+        <label for="txt_query" class="control-label">Digite o Nome da Cidade</label>
+        <input id="txt_query" class="form-control" />
+        <div id="dvAuto" class="alert alert-success" style="width:100%;display:none;">
+            Não Localizado!
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <button type="button" id="bt_Pesquisar" style="margin-top:30px;" class="btn btn-success";">Pesquisar</button>
+    </div>
+    <hr />
+    <div id="dvloading"></div>
+    <div id="dvresp" style="margin-top:50px; display:none; width:100%"></div>
+
+</div>
+
+@section ScriptsModal{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/aPI_Weather.js"></script>
+
+    <script>
+        $(() => {
+            $("#bt_Pesquisar").click(function () {
+                PesquisaAutocomplete($("#txt_query").val(), $("#dvresp"), $("#dvloading"));
+            });
+
+            $("#txt_query").keyup(function () {
+                if ($("#txt_query").val().trim().length >= 3) {
+                    getCidades();
+
+                }
+                else {
+                    $("#dvAuto").fadeOut(300);
+                }
+            });
+        });
+
+        function getCidades() {
+            $("#dvAuto").fadeIn(300);
+            $("#dvAuto").html("<div class='text-center'><img src='../img/loading.gif' /> Pesquisando...</div>");
+            var _url = '/cidade/SearchCidade';
+
+            $.ajax({
+                url: _url,
+                type: 'GET',
+                data: {
+                    Texto: $("#txt_query").val().trim()
+                },
+                processData: true,
+                contentType: true,
+                success: function (obj) {
+                    if (obj.success) {
+                        console.log(obj);
+
+                        $("#dvAuto").html("");
+                        $("#dvAuto").append("<p class='text-center'>Registros Encontrados(<b>" + obj.dados.length + "</b>)</p>");
+                        $("#dvAuto").append("<hr>");
+                        $.each(obj.dados, function (key, item) {
+                            $("#dvAuto").append("<p><a href='##' onclick='SelSearch(\"" + item.nome + "\")'>" + item.nome + "</a></p>");
+                        });
+                    }
+                    else {
+                        $("#dvAuto").fadeOut(300);
+                    }
+                }
+            });
+
+        }
+
+        function SelSearch(_texto) {
+            $("#txt_query").val(_texto);
+            $("#bt_Pesquisar").click();
+            $("#dvAuto").fadeOut(200);
+        }
+
+    </script>
+}
+
+
+

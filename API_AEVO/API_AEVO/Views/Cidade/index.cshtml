@@ -1,0 +1,23 @@
+﻿
+
+@{
+    @model CidadeModel;
+    ViewData["Title"] = "Cidades";
+}
+
+<h4>Cadastro de Cidades</h4>
+
+<form asp-action="Salvar" asp-controller="Cidade">
+    <div class="form-group">
+        <label asp-for="Nome"></label>
+        <input type="text" class="form-control" asp-for="Nome">
+        <input type="hidden" asp-for="Id">
+    </div>
+
+    @Html.Raw(ViewData["Valida"])
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+
+</form>
+
+
